@@ -3,7 +3,7 @@ class Boat {
       var options = {
         restituion: 0.8,
         friction: 1,
-        density: 1,
+        density: 1
       };
   
       this.animation = boatAnimation;
@@ -31,8 +31,20 @@ class Boat {
         translate(pos.x, pos.y);
         rotate(angle);
         imageMode(CENTER);
-        image(this.animation[index], 0, this.boatPosition, this.width, this.height);
+        image(this.animation[index], this.boatPosition,0, this.width, this.height);
         noTint();
         pop();
+    }
+
+    remove(index){
+      this.animation = broken_boatAnimation;
+      this.speed = 0.05;
+      this.width = 300;
+      this.height = 300;
+
+      setTimeout(() => {
+        World.remove(world, boats[index].body);
+        boats.splice(index, 1);
+      }, 2000);
     }
   }

@@ -8,6 +8,7 @@ let world;
 
 var tower;
 var backgroundImg;
+var ground;
 
 var cannon;
 var angle;
@@ -57,6 +58,7 @@ function setup() {
 
   angle = -PI/4;
 
+  ground = new Ground(0, height - 1, width * 2, 1);
   tower = new Tower(150, 350, 160, 310);
   cannon = new Cannon(180, 110, 130, 100, angle);
 
@@ -69,11 +71,24 @@ function draw()
   background(51);
 
   image(backgroundImg, 0, 0, width, height);
+  ground.display();
   tower.display();
   cannon.display();
 
   for (var i = 0; i < balls.length; i++){
     showCannonBalls(balls[i], i);
+    for (var j = 0; j < boats.length; j++){
+      if(boats[j] !== undefined && balls[i] !== undefined){
+        var collision = Matter.SAT.collides(balls[i].body, boats[j].body);
+        if(collision.collided){
+          boats[j].remove(j);
+
+          World.remove(world, balls[i].body);
+          balls.splice(i, 1);
+          i--;
+        }
+      }
+    }
   }
 
   showBoats();
